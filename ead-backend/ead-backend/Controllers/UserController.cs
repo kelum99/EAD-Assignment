@@ -29,5 +29,53 @@ namespace ead_backend.Controllers
             return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
 
         }
+
+        [Route("get-all-users")]
+        [HttpGet]
+        public async Task<List<User>> GetAllUsers()
+        {
+            return await _userCollection.Find(_ => true).ToListAsync();
+
+        }
+
+        [Route("get-user/{id?}")]
+        [HttpGet]
+        public async Task<User?> GetUserById(string id)
+        {
+            return await _userCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+
+        }
+
+        [Route("update-user/{id?}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(string id, User updatedUser)
+        {
+            var user = await GetUserById(id);
+            if(user == null) {
+                return NotFound();
+            }
+
+            updatedUser.Id = user.Id;
+            await _userCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
+
+            return NoContent();
+
+        }
+
+        [Route("delete-user/{id?}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            await _userCollection.DeleteOneAsync(x => x.Id == id);
+
+            return NoContent();
+
+        }
     }
 }
