@@ -3832,7 +3832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antd@npm:^5.9.3":
+"antd@npm:^5.9.4":
   version: 5.9.4
   resolution: "antd@npm:5.9.4"
   dependencies:
@@ -5802,7 +5802,7 @@ __metadata:
     "@testing-library/jest-dom": "npm:^5.14.1"
     "@testing-library/react": "npm:^13.0.0"
     "@testing-library/user-event": "npm:^13.2.1"
-    antd: "npm:^5.9.3"
+    antd: "npm:^5.9.4"
     axios: "npm:^1.5.0"
     eslint-config-react: "npm:^1.1.7"
     jwt-decode: "npm:^3.1.2"
