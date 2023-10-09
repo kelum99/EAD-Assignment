@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Space,
   Table,
@@ -18,6 +18,7 @@ import {
 } from "antd";
 const { Column, ColumnGroup } = Table;
 import MainLayout from "../components/MainLayout";
+import {Stations,Routes} from "./services/Stations";
 
 const onChange = (time, timeString) => {
   console.log(time, timeString);
@@ -62,11 +63,17 @@ const TrainManagement = () => {
       key: "route",
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
     },
   ];
+
+  const [form] = Form.useForm();
+
+  const onReset = () => {
+    form.resetFields();
+  };
 
   return (
     <MainLayout title={"Train Management"}>
@@ -79,11 +86,19 @@ const TrainManagement = () => {
         {/* Train Create */}
         <Modal
           title="Create Train Schedule"
+          width={800}
           open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
+          onOk={() => {
+            handleOk();
+            onReset();
+          }}
+          onCancel={() => {
+            handleCancel();
+            onReset();
+          }}
         >
           <Form
+            form={form}
             labelCol={{
               span: 4,
             }}
@@ -93,14 +108,15 @@ const TrainManagement = () => {
             layout="horizontal"
             initialValues={{
               size: componentSize,
+              remember: true,
             }}
             onValuesChange={onFormLayoutChange}
             size={componentSize}
             style={{
-              maxWidth: 600,
+              maxWidth: 2000,
             }}
           >
-            <Form.Item label="Input">
+            <Form.Item label="Train Name">
               <Input />
             </Form.Item>
 
@@ -114,12 +130,7 @@ const TrainManagement = () => {
             </Form.Item>
 
             <Form.Item label="Route">
-              <Select>
-                <Select.Option value="everyDay">Colombo to Galle</Select.Option>
-                <Select.Option value="weekDay">WeekDay</Select.Option>
-                <Select.Option value="weekEnd">WeekEnd</Select.Option>
-                <Select.Option value="poyaDay">PoyaDay</Select.Option>
-              </Select>
+              <Select options={Routes} />
             </Form.Item>
 
             <Form.Item label="Time">

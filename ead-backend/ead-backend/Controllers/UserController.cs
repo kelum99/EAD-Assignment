@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using BCrypt.Net;
 
 namespace ead_backend.Controllers
 {
@@ -21,10 +22,13 @@ namespace ead_backend.Controllers
             _userCollection = mongoDatabase.GetCollection<User>("User");
         }
 
-        [Route("add-user")]
+        [Route("create-user")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
         {
+            var password = user.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+
             await _userCollection.InsertOneAsync(user);
             return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
 
@@ -58,7 +62,24 @@ namespace ead_backend.Controllers
             updatedUser.Id = user.Id;
             await _userCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
 
-            return NoContent();
+            return Ok();
+
+        }
+
+        [Route("update-user-status/{id?}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateUserStatus(string id, string status)
+        {
+            var user = await GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Status = status;
+            await _userCollection.ReplaceOneAsync(x => x.Id == id, user);
+
+            return Ok();
 
         }
 
@@ -74,7 +95,7 @@ namespace ead_backend.Controllers
 
             await _userCollection.DeleteOneAsync(x => x.Id == id);
 
-            return NoContent();
+            return Ok();
 
         }
     }
