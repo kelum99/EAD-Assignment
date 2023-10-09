@@ -3,25 +3,16 @@ import axios from 'axios';
 import {
     Space,
     Table,
-    Tag,
     TimePicker,
     Button,
     Modal,
-    Cascader,
     DatePicker,
     Form,
     Input,
-    InputNumber,
-    Radio,
-    Select,
-    Switch,
-    TreeSelect,
+    Select
 } from "antd";
 import MainLayout from "../components/MainLayout";
 
-const onChange = (time, timeString) => {
-    console.log(time, timeString);
-};
 const TravelerManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const showModal = () => {
@@ -61,29 +52,39 @@ const TravelerManagement = () => {
     // Implement similar functions for updating, deleting, and activating/deactivating travelers.
     const columns = [
         {
-            title: "Train Name",
+            title: "NIC",
+            dataIndex: "nic",
+            key: "nic",
+        },
+        {
+            title: "Name",
             dataIndex: "name",
-            key: "name",
+            key: "nme",
         },
         {
-            title: "Schedule",
-            dataIndex: "schedule",
-            key: "schedule",
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
         },
         {
-            title: "Time",
-            dataIndex: "time",
-            key: "time",
+            title: "Mobile",
+            dataIndex: "mobile",
+            key: "mobile",
         },
         {
-            title: "Route",
-            dataIndex: "route",
-            key: "route",
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
         },
         {
-            title: "Action",
-            dataIndex: "action",
-            key: "action",
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <a>Activate</a>
+                    <a>Deactivate</a>
+                </Space>
+            ),
         },
     ];
     return (
