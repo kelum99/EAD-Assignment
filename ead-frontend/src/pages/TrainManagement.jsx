@@ -1,45 +1,33 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   Space,
   Table,
-  Tag,
   TimePicker,
   Button,
   Modal,
-  Cascader,
   DatePicker,
   Form,
   Input,
-  InputNumber,
-  Radio,
   Select,
-  Switch,
-  TreeSelect,
+  message, Popconfirm,
 } from "antd";
-const { Column, ColumnGroup } = Table;
+// const { Column, ColumnGroup } = Table;
 import MainLayout from "../components/MainLayout";
-import {Stations,Routes} from "./services/Stations";
+import { Stations, Routes } from "./services/Stations";
+import useRequest from "./services/RequestContext";
 
 const onChange = (time, timeString) => {
   console.log(time, timeString);
 };
 
-const TrainManagement = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+export default function TrainManagement  ()  {
 
-  const [componentSize, setComponentSize] = useState("default");
-  const onFormLayoutChange = ({ size }) => {
-    setComponentSize(size);
-  };
+  const [form] = Form.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [selectedId, setSelectedId] = useState();
+  const [data, setData] = useState([]);
+  const {request} = useRequest();
 
   const columns = [
     {
@@ -66,88 +54,289 @@ const TrainManagement = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      render: (text) => (text === 0 ? 'inactive' : text === 1 ? 'active' : 'publish')
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+          <Space size="middle">
+            <a onClick={() => showEdit(record)}>Edit</a>
+            <Popconfirm
+                title="Delete Train"
+                description="Are you sure to cancel this train?"
+                onConfirm={() => deleteTrain(record.id)}
+                okText="Yes"
+                cancelText="No">
+              <a>Delete</a>
+            </Popconfirm>
+
+          </Space>
+      ),
+
     },
   ];
 
-  const [form] = Form.useForm();
 
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
   const onReset = () => {
     form.resetFields();
   };
+  const handleOk = () => {
+    form.submit();
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    setSelectedId(undefined);
+    setEdit(false);
+    onReset()
+  };
+
+  const showEdit = (data) => {
+    setSelectedId(data.id);
+    setEdit(true);
+    showModal();
+    //console.log(data);
+
+    const fieldsData = {
+      Name: data.name,
+      Schedule: data.schedule,
+      Time: data.time,
+      Route: data.route,
+      Stations: data.stations,
+      Status: data.status,
+    }
+    form.setFieldsValue(fieldsData);
+  };
+
+  // const [componentSize, setComponentSize] = useState("default");
+  // const onFormLayoutChange = ({size}) => {
+  //   setComponentSize(size);
+  // };
+
+
+
+// const onFinish = async (values) => {
+//     const train = {
+//
+//       Name: values.Name,
+//       Schedule: values.Schedule,
+//       Time: values.Time,
+//       Route: values.Route,
+//       Date: values.Date,
+//     };
+//
+//     await request.post('train/add-train', train).then((res) =>{
+//       if(res?.status === 400){
+//         const error =res.data.errors;
+//         console.log(error)
+//         if (errors && errors.length > 0){
+//           const errorMessage = error[0];
+//           message.error(errorMessage);
+//         }
+//       }else if(res?.status === 201){
+//         handleCancel();
+//         getTrainData();
+//         return message.success('Reservation Success!');
+//       }else {
+//         return message.error('Internal server error!');
+//       }
+//     })
+// }
+
+  const onFinish = async (values) => {
+    try{
+      if(edit && selectedId){
+        const updateTrain = {
+          Name: values.Name,
+          Schedule: values.Schedule,
+          Time: values.Time,
+          Route: values.Route,
+          Stations: values.Stations,
+          Status: values.Status,
+        };
+        await request.put(`train/update-train/${selectedId}`, updateTrain)
+            .then((res) => {
+              if (res.status === 204){
+                getTrainData();
+                message.success("Train update Success!");
+                handleCancel();
+              }
+            })
+            .catch((error) => message.error(error.response.data));
+      } else{
+        const train = {
+          ...values,
+          Name: values.Name,
+          Schedule: values.Schedule,
+          Time: values.Time,
+          Route: values.Route,
+          Stations: values.Stations,
+          Status: values.Status,
+        };
+        const response = await request.post(
+            "train/add-train", train
+        );
+        if (response.status ===201){
+          handleCancel();
+          getTrainData();
+          message.success("Train added success!");
+        }else {
+          message.error("Internal Server error!");
+        }
+      }
+    } catch (error){
+      message.error(error.response.data);
+    }
+  };
+
+  // //edit form
+  // const showEdit = (data) =>{
+  //   setSelectedId(data.id);
+  //   setEdit(true);
+  //   showModal();
+  //   console.log(data);
+  //   const fieldsData = {
+  //     Name: values.Name,
+  //     Schedule: values.Schedule,
+  //     Time: values.Time,
+  //     Route: values.Route,
+  //     Stations: values.Stations,
+  //     Status: values.Status,
+  //   };
+  //   form.setFieldsValue(fieldsData);
+  // };
+
+
+
+  const deleteTrain = async (id) => {
+    try{
+      request.delete(`train/delete-train/${id}`).then((res) =>{
+        if (res.status === 204){
+          getTrainData();
+          message.success("Train Delete Successfully!");
+        }
+      }).catch((error) => message.error('Train remove'));
+    } catch (e){
+      console.log('error',e);
+    }
+  };
+
+  const getTrainData = async () => {
+    try {
+      console.log("Fetching train data...");
+      await request.get('train/get-all-trains')
+          .then((res) => {
+            console.log("Response:", res);
+            setData(res.data);
+          })
+          .catch((err) => {
+            console.error('Error:', err);
+            message.error('Data Fetching Failed!', err);
+          });
+    } catch (e) {
+      console.error('Error:', e);
+    }
+  };
+
+  useEffect(() => {
+    getTrainData();
+  }, [])
+
+
+
+
 
   return (
-    <MainLayout title={"Train Management"}>
-      <div>
-        <Table columns={columns} />
-        <Button type="primary" onClick={showModal} style={{ marginTop: 16 }}>
-          Add Train
-        </Button>
+      <MainLayout title={"Train Management"}>
+        <div>
+          <Table columns={columns} dataSource={data} rowKey={(record) => record.id} />
+          <Button type="primary" onClick={showModal} style={{ marginTop: 16 }}>
+            Add Train
+          </Button>
 
-        {/* Train Create */}
-        <Modal
-          title="Create Train Schedule"
-          width={800}
-          open={isModalOpen}
-          onOk={() => {
-            handleOk();
-            onReset();
-          }}
-          onCancel={() => {
-            handleCancel();
-            onReset();
-          }}
-        >
-          <Form
-            form={form}
-            labelCol={{
-              span: 4,
-            }}
-            wrapperCol={{
-              span: 14,
-            }}
-            layout="horizontal"
-            initialValues={{
-              size: componentSize,
-              remember: true,
-            }}
-            onValuesChange={onFormLayoutChange}
-            size={componentSize}
-            style={{
-              maxWidth: 2000,
-            }}
+
+          <Modal
+              title={edit ? "Update Train" : "Create Train Schedule"}
+              okText={edit ? "Update" : "Create"}
+              width={800}
+              //okText={edit ? 'Update' : 'Create'}
+              onOk={handleOk}
+              open={isModalOpen}
+              maskClosable={false}
+              onCancel={handleCancel}
+              //   onOk={() => {
+              //     handleOk();
+              //     onReset();
+              //   }}
+              //   footer={[
+              //     <Button key="submit" type="primary" onClick={handleOk}>
+              //       Submit
+              //     </Button>,
+              //   ]}
+              //   onCancel={() => {
+              //     handleCancel();
+              // }}
           >
-            <Form.Item label="Train Name">
-              <Input />
-            </Form.Item>
+            <Form
+                form={form}
+                onFinish={onFinish}
+                labelCol={{
+                  span: 4,
+                }}
+                wrapperCol={{
+                  span: 14,
+                }}
+                layout="horizontal"
+                // initialValues={{
+                //   size: componentSize,
+                //   remember: true,
+                // }}
+            >
+              <Form.Item label="Train Name" name="Name">
+                <Input />
+              </Form.Item>
 
-            <Form.Item label="Schedule">
-              <Select>
-                <Select.Option value="everyDay">EveryDay</Select.Option>
-                <Select.Option value="weekDay">WeekDay</Select.Option>
-                <Select.Option value="weekEnd">WeekEnd</Select.Option>
-                <Select.Option value="poyaDay">PoyaDay</Select.Option>
-              </Select>
-            </Form.Item>
+              <Form.Item label="Schedule" name="Schedule">
+                <Select options={Stations} />
+              </Form.Item>
 
-            <Form.Item label="Route">
-              <Select options={Routes} />
-            </Form.Item>
+              <Form.Item label="Route" name="Route">
+                <Select options={Routes} />
+              </Form.Item>
 
-            <Form.Item label="Time">
-              <Space wrap>
-                {/* <TimePicker use12Hours onChange={onChange} /> */}
-                {/* <TimePicker use12Hours format="h:mm:ss A" onChange={onChange} /> */}
-                <TimePicker use12Hours format="h:mm a" onChange={onChange} />
-              </Space>
-            </Form.Item>
+              <Form.Item label="Time" name="Time">
+                <Space wrap>
+                  <TimePicker use12Hours format="h:mm A"
+                      // onChange={onChange}
+                  />
+                </Space>
+              </Form.Item>
 
-            <Form.Item label="Updated Date">
-              <DatePicker />
-            </Form.Item>
-          </Form>
-        </Modal>
-      </div>
-    </MainLayout>
+              <Form.Item label="Status" name="Status" initialValue={0}>
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="Stations" name="Stations">
+                <Select
+                    mode="multiple"
+                    allowClear
+                    style={{
+                      width: '100%',
+                    }}
+                    placeholder="Please select"
+                    //defaultValue={['a10', 'c12']}
+                    //onChange={handleChange}
+                    options={Stations}
+                />
+              </Form.Item>
+            </Form>
+          </Modal>
+
+        </div>
+      </MainLayout>
   );
 };
-export default TrainManagement;
+
