@@ -4,13 +4,24 @@ export const Stations = [
         value:"Colombo"
     },
     {
-        label:"Colombo",
-        value:"Colombo"
+        label:"Galle",
+        value:"Galle"
     },
     {
-        label:"Colombo",
-        value:"Colombo"
-    }
+        label:"Bentota",
+        value:"Bentota"
+    },
+    {
+        label:"Aluthgama",
+        value:"Aluthgama"
+    },
+    {
+        label:"Mathara",
+        value:"Mathara"
+    },{
+        label:"Beliathtta",
+        value:"Beliathtta"
+    },
 ];
 
 export const Routes = [
@@ -23,7 +34,7 @@ export const Routes = [
         value:"Colombo to Mathara"
     },
     {
-        label:"Colombo",
-        value:"Colombo"
+        label:"Colombo to Badulla",
+        value:"Colombo to Badulla"
     }
 ]
