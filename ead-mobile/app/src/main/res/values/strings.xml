@@ -18,4 +18,32 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="new_user">Do not have an account yet? Register now</string>
+    <string name="booking_txt">Booking</string>
+    <string name="et_nic">NIC</string>
+    <string name="et_bookingDate">Booking Date</string>
+    <string name="et_reserveDate">Reservation Date\n</string>
+    <string name="et_tickets">No Of Tickets</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="et_time">Time</string>
+    <string name="txt_history">Reservation History</string>
+    <string name="txt_upcomig">Upcoming Reservations</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="txt_update_booking">Update Booking</string>
+    <string name="btn_update">Update</string>
+    <array name="train_array">
+        <item>Train 1</item>
+        <item>Train 2</item>
+        <item>Train 3</item>
+    </array>
+    <array name="route_array">
+        <item>Route 1</item>
+        <item>Route 2</item>
+        <item>Route 3</item>
+    </array>
+    <array name="station_array">
+        <item>Station 1</item>
+        <item>Station 2</item>
+        <item>Station 3</item>
+    </array>
 </resources>

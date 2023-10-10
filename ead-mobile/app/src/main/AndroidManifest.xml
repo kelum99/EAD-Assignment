@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Eadmobile"
         tools:targetApi="31">
         <activity
+            android:name=".ui.reservation.ReservationSummary"
+            android:exported="false" />
+        <activity
+            android:name=".ui.reservation.UpdateReservation"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity2"
             android:exported="false" />
         <activity

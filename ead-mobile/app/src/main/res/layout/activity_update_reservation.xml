@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/booking_txt"
+        android:text="@string/txt_update_booking"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -109,12 +109,12 @@
         app:layout_constraintTop_toBottomOf="@+id/et_train" />
 
     <Button
-        android:id="@+id/btn_submit"
+        android:id="@+id/btn_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginTop="15dp"
-        android:text="@string/btn_submit"
+        android:text="@string/btn_update"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_time" />
@@ -130,7 +130,7 @@
         android:textStyle="bold"
         android:theme="@android:style/Theme.NoTitleBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_submit"
+        app:layout_constraintTop_toTopOf="@+id/btn_update"
         app:strokeColor="@color/purple_500"
         app:strokeWidth="1dp" />
 
