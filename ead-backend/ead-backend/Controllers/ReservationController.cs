@@ -28,7 +28,7 @@ namespace ead_backend.Controllers
 
             if (daysDifference >= 0 && daysDifference <= 30)
             {
-                var userReservations = await GetReservationsByUser(reservation.UserID);
+                var userReservations = await GetReservationsByUser(reservation.UserNIC);
 
                 if (userReservations.Count >= 4)
                 {
@@ -58,7 +58,7 @@ namespace ead_backend.Controllers
         [HttpGet]
         public async Task<List<Reservation?>> GetReservationsByUser(string userid)
         {
-            return await _reservationCollection.Find(x => x.UserID == userid).ToListAsync();
+            return await _reservationCollection.Find(x => x.UserNIC == userid).ToListAsync();
 
         }
 
@@ -96,7 +96,7 @@ namespace ead_backend.Controllers
 
         }
 
-        [Route("cancel-Reservation/{id?}")]
+        [Route("cancel-reservation/{id?}")]
         [HttpDelete]
         public async Task<IActionResult> CancelReservation(string id)
         {

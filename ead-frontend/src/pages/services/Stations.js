@@ -19,8 +19,8 @@ export const Routes = [
         value:"Colombo to Galle"
     },
     {
-        label:"Colombo",
-        value:"Colombo"
+        label:"Colombo to Mathara",
+        value:"Colombo to Mathara"
     },
     {
         label:"Colombo",
