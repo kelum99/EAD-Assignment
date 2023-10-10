@@ -24,6 +24,12 @@ namespace ead_backend.Controllers
             public string? Password { get; set; }
         }
 
+        public class UserLoginData
+        {
+            public string? Nic { get; set; }
+            public string? Password { get; set; }
+        }
+
         public AuthController(IOptions<Database> database, IConfiguration config)
         {
             var mongoClient = new MongoClient(database.Value.ConnectionString);
@@ -77,15 +83,15 @@ namespace ead_backend.Controllers
 
         [Route("user-login")]
         [HttpPost]
-        public async Task<IActionResult> UserLogin(string nic, string password)
+        public async Task<IActionResult> UserLogin(UserLoginData userLoginData)
         {
-            var user = await _userCollection.Find(x => x.NIC == nic).FirstOrDefaultAsync();
+            var user = await _userCollection.Find(x => x.NIC == userLoginData.Nic).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound();
             }
 
-            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+            if (!BCrypt.Net.BCrypt.Verify(userLoginData.Password, user.Password))
             {
                 return Unauthorized();
             }

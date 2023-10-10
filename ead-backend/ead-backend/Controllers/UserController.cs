@@ -28,7 +28,7 @@ namespace ead_backend.Controllers
         {
             var password = user.Password;
             user.Password = BCrypt.Net.BCrypt.HashPassword(password);
-
+            user.Status = "Active";
             await _userCollection.InsertOneAsync(user);
             return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
 

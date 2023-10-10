@@ -7,6 +7,7 @@
     <string name="email">Email</string>
     <string name="nic">NIC</string>
     <string name="mobile">Mobile</string>
+    <string name="register_title">Register Now</string>
     <string name="status">Status</string>
     <string name="name">Name</string>
     <string name="password">Password</string>

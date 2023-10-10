@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 //services cors
 builder.Services.AddCors(p => p.AddPolicy("dev", builder =>
 {
-    builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
 }));
 
 // JWT Authentication
