@@ -1,5 +1,7 @@
 package com.example.ead_mobile.services;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,8 @@ import com.example.ead_mobile.interfaces.IUserService;
 import com.example.ead_mobile.models.LoginRequestModel;
 import com.example.ead_mobile.models.LoginResponseModel;
 import com.example.ead_mobile.models.RegisterRequestModel;
+import com.example.ead_mobile.models.User;
+import com.example.ead_mobile.models.UserEntity;
 
 import java.util.function.Consumer;
 
@@ -18,6 +22,12 @@ import retrofit2.Response;
 public class AuthService {
     private static AuthService singleton;
     private final IUserService userService;
+    private final DatabaseService databaseService;
+
+    private final String login_status = "login_status";
+    private final String is_logged = "is_logged";
+    private final String user_nic = "user_nic";
+    private final String user_id = "user_id";
 
     public static AuthService getInstance() {
         if (singleton == null)
@@ -28,7 +38,7 @@ public class AuthService {
 
     private AuthService() {
         userService = NetworkService.getInstance().createService(IUserService.class);
-        //databaseManager = DatabaseManager.getInstance();
+        databaseService = DatabaseService.getInstance();
     }
 
     public void login(
@@ -50,6 +60,15 @@ public class AuthService {
                         if (response.code() == 200) {
                             assert response.body() != null;
                             if (response.body().status.equalsIgnoreCase("Active")) {
+                                User user = new User();
+                                user.id = response.body().id;
+                                user.nic = response.body().nic;
+                                user.name = response.body().name;
+                                user.email = response.body().email;
+                                user.mobile = response.body().mobile;
+                                user.status = response.body().status;
+                                saveUserDetails(user);
+                                setLoggingStatus(true,user.nic,user.id);
                                 onSuccess.run();
                             } else {
                                 onError.accept("This Account is Deactivated!");
@@ -67,6 +86,50 @@ public class AuthService {
                     }
                 });
 
+    }
+
+    public void saveUserDetails(User user) {
+        new Thread(() -> {
+            databaseService.db().iLocalService().removeAll();
+            databaseService.db().iLocalService().insert(UserEntity.fromDto(user));
+        }).start();
+    }
+
+    public void setLoggingStatus(boolean isLoggedIn, String nic,String id){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences.Editor editor = context.getSharedPreferences(login_status, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(is_logged, isLoggedIn);
+        editor.putString(user_nic, nic);
+        editor.putString(user_id, id);
+        editor.apply();
+    }
+
+    public boolean getLoggingStatus(){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
+        return preference.getBoolean(is_logged, false);
+    }
+
+    public String getLoggedUserNic(){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
+        return preference.getString(user_nic,"DEFAULT");
+    }
+
+    public String getLoggedUserId(){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
+        return preference.getString(user_id,"DEFAULT_ID");
+    }
+
+    public void logout() {
+        new Thread(() -> {
+            Context context = ContextService.getInstance().getApplicationContext();
+            SharedPreferences.Editor editor = context.getSharedPreferences(login_status, Context.MODE_PRIVATE).edit();
+            editor.clear();
+            editor.apply();
+            databaseService.db().iLocalService().removeAll();
+        }).start();
     }
 
     public void register(
