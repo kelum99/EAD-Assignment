@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="enabledButtonColor">#FF0000</color>
     <color name="disabledButtonColor">#808080</color>
+    <color name="enabledUpdateButtonColor">#FF6200EE</color>
 </resources>

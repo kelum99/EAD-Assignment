@@ -216,6 +216,7 @@ public class DashboardFragment extends Fragment {
 
             if (cancelReservationButton.isEnabled()) {
                 // Button is enabled, set the background color to red
+                updateReservationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.enabledUpdateButtonColor)));
                 cancelReservationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.enabledButtonColor)));
             } else {
                 // Button is disabled, set the background color to grey
