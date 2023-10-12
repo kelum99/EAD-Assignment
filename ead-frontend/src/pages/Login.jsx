@@ -12,8 +12,7 @@ export default function Login() {
     const {decodeToken} = useUser()
 
     const onFinish = async (values) => {
-        console.log(values);
-        request.post('auth/admin-login', {email: values.email, password: values.password}).then((res) => {
+        await request.post('auth/admin-login', {email: values.email, password: values.password}).then((res) => {
             if (res?.status === 404) {
                 return message.error('User Not Found!');
             } else if (res?.status === 401) {

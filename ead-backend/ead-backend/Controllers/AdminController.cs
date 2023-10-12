@@ -60,6 +60,7 @@ namespace ead_backend.Controllers
             }
 
             updateAdmin.Id = admin.Id;
+            updateAdmin.Password = admin.Password;
             await _adminCollection.ReplaceOneAsync(x => x.Id == id, updateAdmin);
 
             return Ok();

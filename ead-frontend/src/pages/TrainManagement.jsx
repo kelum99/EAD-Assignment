@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   Space,
   Table,
@@ -18,6 +18,7 @@ import {
 } from "antd";
 const { Column, ColumnGroup } = Table;
 import MainLayout from "../components/MainLayout";
+import {Stations,Routes} from "./services/Stations";
 
 const onChange = (time, timeString) => {
   console.log(time, timeString);
@@ -129,16 +130,7 @@ const TrainManagement = () => {
             </Form.Item>
 
             <Form.Item label="Route">
-              <Select>
-                <Select.Option value="everyDay">Colombo to Galle</Select.Option>
-                <Select.Option value="weekDay">
-                  Maradhana to Matara
-                </Select.Option>
-                <Select.Option value="weekEnd">Colombo to Kandy</Select.Option>
-                <Select.Option value="poyaDay">
-                  Colombo to Badulla
-                </Select.Option>
-              </Select>
+              <Select options={Routes} />
             </Form.Item>
 
             <Form.Item label="Time">
