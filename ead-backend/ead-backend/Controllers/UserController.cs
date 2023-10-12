@@ -14,6 +14,11 @@ namespace ead_backend.Controllers
         private readonly IMongoCollection<User> _userCollection;
         private readonly ILogger<UserController> _logger;
 
+        public class UpdatedStatus
+        {
+            public string? Status { get; set; }
+        }
+
         public UserController(ILogger<UserController> logger, IOptions<Database> database)
         {
             _logger = logger;
@@ -28,7 +33,7 @@ namespace ead_backend.Controllers
         {
             var password = user.Password;
             user.Password = BCrypt.Net.BCrypt.HashPassword(password);
-
+            user.Status = "Active";
             await _userCollection.InsertOneAsync(user);
             return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
 
@@ -68,7 +73,7 @@ namespace ead_backend.Controllers
 
         [Route("update-user-status/{id?}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateUserStatus(string id, string status)
+        public async Task<IActionResult> UpdateUserStatus(string id, UpdatedStatus updatedStatus)
         {
             var user = await GetUserById(id);
             if (user == null)
@@ -76,7 +81,7 @@ namespace ead_backend.Controllers
                 return NotFound();
             }
 
-            user.Status = status;
+            user.Status = updatedStatus.Status;
             await _userCollection.ReplaceOneAsync(x => x.Id == id, user);
 
             return Ok();

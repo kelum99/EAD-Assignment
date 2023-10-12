@@ -90,7 +90,9 @@ const TicketBookingManagement = () => {
         const data = response.data.map((reservation) => ({
           ...reservation,
           bookingDate: dayjs(reservation.bookingDate).format(dateFormat),
-          reservationDate: dayjs(reservation.reservationDate).format(dateFormat),
+          reservationDate: dayjs(reservation.reservationDate).format(
+            dateFormat
+          ),
         }));
         setReservations(data);
       } else {
@@ -100,7 +102,6 @@ const TicketBookingManagement = () => {
       console.error("Error", error);
     }
   };
-  
 
   //Disable the dates before current date and after 30 days from current date
   const disabledDate = (current) => {
@@ -448,12 +449,7 @@ const TicketBookingManagement = () => {
                 },
               ]}
             >
-              <Select onChange={setStart}>
-                <Select.Option value="Colombo">Colombo</Select.Option>
-                <Select.Option value="Galle">Galle</Select.Option>
-                <Select.Option value="Matara">Matara</Select.Option>
-                <Select.Option value="Kandy">Kandy</Select.Option>
-              </Select>
+              <Select options={Stations} onChange={setStart} />
             </Form.Item>
 
             <Form.Item
@@ -465,12 +461,7 @@ const TicketBookingManagement = () => {
                 },
               ]}
             >
-              <Select onChange={setDestination}>
-                <Select.Option value="Colombo">Colombo</Select.Option>
-                <Select.Option value="Galle">Galle</Select.Option>
-                <Select.Option value="Matara">Matara</Select.Option>
-                <Select.Option value="Kandy">Kandy</Select.Option>
-              </Select>
+              <Select options={Stations} onChange={setDestination} />
             </Form.Item>
 
             <Form.Item label="Time" name="time">
