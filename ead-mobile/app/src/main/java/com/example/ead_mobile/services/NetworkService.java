@@ -14,6 +14,7 @@ public class NetworkService {
     OkHttpClient okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient();
     private final Retrofit retrofit;
     private ConnectivityManager connectivityManager;
+
     //Returns NetworkService singleton object
     public static NetworkService getInstance(){
         if (singleton == null)

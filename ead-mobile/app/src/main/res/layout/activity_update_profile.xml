@@ -5,22 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.updateProfile">
 
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/register_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/traveler_profile"
-        android:textSize="24sp"
+        android:text="@string/update_profile"
+        android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
-
 
     <TextView
         android:id="@+id/nicTextView"
@@ -32,21 +30,20 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/register_txt"
         />
 
-    <TextView
-        android:id="@+id/nicText"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/update_nic"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="123456789v"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:hint="@string/nic"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nicTextView"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/nicTextView" />
 
     <TextView
         android:id="@+id/nameTextView"
@@ -58,17 +55,17 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nicText"
+        app:layout_constraintTop_toBottomOf="@+id/update_nic"
         />
 
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/update_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="123456789v"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:hint="@string/name"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameTextView"
@@ -84,21 +81,20 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameText"
+        app:layout_constraintTop_toBottomOf="@+id/update_name"
         />
 
-    <TextView
-        android:id="@+id/emailText"
-        android:layout_width="match_parent"
+    <EditText
+        android:id="@+id/update_email"
+        android:layout_width="0dp"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
-        android:text="123456789v"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailTextView"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/emailTextView"/>
 
     <TextView
         android:id="@+id/mobileTextView"
@@ -110,80 +106,50 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailText"
+        app:layout_constraintTop_toBottomOf="@+id/update_email"
         />
 
-    <TextView
-        android:id="@+id/mobileText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="123456789v"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mobileTextView"
-        />
-
-    <TextView
-        android:id="@+id/statusTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/status"
-        android:textSize="18sp"
-        android:textStyle="bold"
+    <EditText
+        android:id="@+id/update_mobile"
+        android:layout_width="0dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mobileText"
-        />
-    <TextView
-        android:id="@+id/statusText"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123456789v"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:hint="@string/mobile"
+        android:inputType="phone"
+        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statusTextView"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/mobileTextView"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="48dp"
+        app:layout_constraintTop_toBottomOf="@+id/update_mobile">
     <Button
         android:id="@+id/update_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/update_profile"
-        android:layout_marginTop="64dp"
+        android:layout_gravity="start"
+        android:layout_marginEnd="16dp"
+        android:text="@string/update"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statusText"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/deactivate_btn"
+        android:id="@+id/cancel_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/deactivate_profile"
-        android:textColor="@color/white"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="@color/design_default_color_error"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_btn"
-        />
-
-    <Button
-        android:id="@+id/logout_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
+        android:text="@string/btn_cancel"
         android:textColor="@color/black"
+        android:layout_marginStart="16dp"
         android:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deactivate_btn"
         />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

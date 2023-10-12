@@ -65,13 +65,15 @@ namespace ead_backend.Controllers
             }
 
             updatedUser.Id = user.Id;
+            updatedUser.Status = user.Status;
+            updatedUser.Password = user.Password;
             await _userCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
 
             return Ok();
 
         }
 
-        [Route("update-user-status/{id?}")]
+        [Route("update-user-status/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateUserStatus(string id, UpdatedStatus updatedStatus)
         {

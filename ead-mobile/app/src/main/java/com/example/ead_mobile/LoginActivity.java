@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -31,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         authService = AuthService.getInstance();
 
+        //Check whether is user logged or not to the application
         if(authService.getLoggingStatus()){
             handleLoginSuccess();
         }
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         this.login.setOnClickListener(view -> onLogin());
     }
 
+    //calling login method that is implemented in AuthService
     private void onLogin(){
         if(!nic.getText().toString().isEmpty() && !password.getText().toString().isEmpty()) {
             authService.login(

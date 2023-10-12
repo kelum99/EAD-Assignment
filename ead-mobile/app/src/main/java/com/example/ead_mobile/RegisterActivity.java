@@ -46,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.register.setOnClickListener(view -> onRegister());
     }
 
+    //calling register method that is implemented in AuthService
     private void onRegister() {
         if (!nic.getText().toString().isEmpty() && !password.getText().toString().isEmpty() && !email.getText().toString().isEmpty() && !name.getText().toString().isEmpty() && !mobile.getText().toString().isEmpty()) {
             authService.register(
