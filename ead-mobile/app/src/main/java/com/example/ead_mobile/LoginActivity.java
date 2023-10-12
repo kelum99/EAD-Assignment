@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -29,6 +30,10 @@ public class LoginActivity extends AppCompatActivity {
         Objects.requireNonNull(this.getSupportActionBar()).hide();
 
         authService = AuthService.getInstance();
+
+        if(authService.getLoggingStatus()){
+            handleLoginSuccess();
+        }
 
         this.nic = findViewById(R.id.nic);
         this.password = findViewById(R.id.password);
