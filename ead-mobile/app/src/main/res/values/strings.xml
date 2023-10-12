@@ -1,6 +1,83 @@
 <resources>
     <string name="app_name">ead-mobile</string>
-    <string name="title_home">Home</string>
+    <string name="title_home">Reservations</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="email">Email</string>
+    <string name="nic">NIC</string>
+    <string name="mobile">Mobile</string>
+    <string name="register_title">Register Now</string>
+    <string name="login">Login</string>
+    <string name="logout">Log Out</string>
+    <string name="status">Status</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_sign_up">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="new_user">Do not have an account yet? Register now</string>
+    <string name="booking_txt">Booking</string>
+    <string name="et_nic">NIC</string>
+    <string name="et_bookingDate">Booking Date</string>
+    <string name="et_reserveDate">Reservation Date\n</string>
+    <string name="et_tickets">No Of Tickets</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="et_time">Time</string>
+    <string name="txt_history">Reservation History</string>
+    <string name="txt_upcomig">Upcoming Reservations</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="txt_update_booking">Update Booking</string>
+    <string name="btn_update">Update</string>
+    <string name="summary">Summary</string>
+    <array name="train_array">
+        <item>Select Train</item>
+        <item>Express Train</item>
+        <item>Udarata Manike</item>
+        <item>Yal Devi</item>
+        <item>Intercity Express</item>
+        <item>Podi Manike</item>
+        <item>Express (A)</item>
+        <item>Express (B)</item>
+        <item>Galu Kumari</item>
+    </array>
+    <array name="route_array">
+        <item>Select Route</item>
+        <item>Colombo to Galle</item>
+        <item>Colombo to Mathara</item>
+        <item>Colombo to Badulla</item>
+    </array>
+    <array name="start_station_array">
+        <item>Select Start</item>
+        <item>Colombo</item>
+        <item>Galle</item>
+        <item>Bentota</item>
+        <item>Aluthgama</item>
+        <item>Mathara</item>
+        <item>Beliathtta</item>
+    </array>
+    <array name="end_station_array">
+        <item>Select Destination</item>
+        <item>Colombo</item>
+        <item>Galle</item>
+        <item>Bentota</item>
+        <item>Aluthgama</item>
+        <item>Mathara</item>
+        <item>Beliathtta</item>
+    </array>
+    <array name="time_array">
+        <item>Select Time</item>
+        <item>9.30 AM</item>
+        <item>10.30 AM</item>
+        <item>1.00 PM</item>
+        <item>2.00 PM</item>
+        <item>2.30 PM</item>
+        <item>4.30 PM</item>
+        <item>6.00 PM</item>
+    </array>
 </resources>

@@ -30,6 +30,16 @@ namespace ead_backend.Controllers
             return CreatedAtAction(nameof(CreateTrain), new { id = train.Id }, train);
         }
 
+        //[Route("get-all-trains")]
+        //[HttpGet]
+
+        //public async Task<List<Train>> GetAllTrains(Enum status = true, string route = "Colombo")
+        //{
+        //  var filterBuilder = Builders<Train>.Filters;
+        //var filter = filterBuilder.Eq("Status", status) & filterBuilder.Eq("Route", route);
+        //return await _trainCollection.Find(_ => true).ToListAsync();
+        //}
+
         [Route("get-all-trains")]
         [HttpGet]
 
@@ -58,12 +68,12 @@ namespace ead_backend.Controllers
             }
 
             updateTrain.Id = train.Id;
-            await _trainCollection.ReplaceOneAsync(x =>x.Id == id, updateTrain);
+            await _trainCollection.ReplaceOneAsync(x => x.Id == id, updateTrain);
 
             return NoContent();
         }
 
-        [Route("delete-user/{id?}")]
+        [Route("delete-train/{id?}")]
         [HttpDelete]
 
         public async Task<IActionResult> DeleteTrain(string id)

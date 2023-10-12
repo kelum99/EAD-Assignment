@@ -9,11 +9,11 @@ namespace ead_backend.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        [BsonElement("Name")]
+        public string? NIC { get; set; }
         public string? Name { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public string? Role { get; set; }
+        public string? Status { get; set; }
         public string? Mobile { get; set; }
 
     }

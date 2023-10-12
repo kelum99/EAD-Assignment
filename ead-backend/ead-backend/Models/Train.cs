@@ -4,6 +4,7 @@ using System;
 
 namespace ead_backend.Models
 {
+    //[BsonIgnoreIfDefault]
     public enum TrainStatus
     {
         Inactive,
@@ -22,12 +23,15 @@ namespace ead_backend.Models
 
         public string? Name { get; set; }
 
-        public string? Schedule { get; set; } 
+        public string? Schedule { get; set; }
 
-        [BsonElement("Time")]
+        //[BsonElement("Time")]
         public string? Time { get; set; }
 
         public string? Route { get; set; }
+
+        [BsonIgnoreIfDefault]
+        public List<String>? Stations { get; set; }
 
         [BsonElement("Date")]
         [BsonDateTimeOptions(DateOnly = true)]

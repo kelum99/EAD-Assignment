@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using BCrypt.Net;
 
 namespace ead_backend.Controllers
 {
@@ -13,6 +14,11 @@ namespace ead_backend.Controllers
         private readonly IMongoCollection<User> _userCollection;
         private readonly ILogger<UserController> _logger;
 
+        public class UpdatedStatus
+        {
+            public string? Status { get; set; }
+        }
+
         public UserController(ILogger<UserController> logger, IOptions<Database> database)
         {
             _logger = logger;
@@ -21,10 +27,13 @@ namespace ead_backend.Controllers
             _userCollection = mongoDatabase.GetCollection<User>("User");
         }
 
-        [Route("add-user")]
+        [Route("create-user")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
         {
+            var password = user.Password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(password);
+            user.Status = "Active";
             await _userCollection.InsertOneAsync(user);
             return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
 
@@ -58,7 +67,24 @@ namespace ead_backend.Controllers
             updatedUser.Id = user.Id;
             await _userCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
 
-            return NoContent();
+            return Ok();
+
+        }
+
+        [Route("update-user-status/{id?}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateUserStatus(string id, UpdatedStatus updatedStatus)
+        {
+            var user = await GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Status = updatedStatus.Status;
+            await _userCollection.ReplaceOneAsync(x => x.Id == id, user);
+
+            return Ok();
 
         }
 
@@ -74,7 +100,7 @@ namespace ead_backend.Controllers
 
             await _userCollection.DeleteOneAsync(x => x.Id == id);
 
-            return NoContent();
+            return Ok();
 
         }
     }
