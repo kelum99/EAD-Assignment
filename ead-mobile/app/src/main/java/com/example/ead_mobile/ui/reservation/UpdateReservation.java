@@ -1,5 +1,7 @@
 package com.example.ead_mobile.ui.reservation;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -59,8 +61,8 @@ public class UpdateReservation extends AppCompatActivity {
         String agentID = intent.getStringExtra("agentID");
 
         nicEditText.setText(userNIC);
-        bookingDateEditText.setText(bookingDate.subSequence(0,10));
-        reserveDateEditText.setText(reservationDate.subSequence(0,10));
+        bookingDateEditText.setText(bookingDate.subSequence(0, 10));
+        reserveDateEditText.setText(reservationDate.subSequence(0, 10));
         noOfTicketsEditText.setText(noOfTickets);
         routeEditText.setText(route);
         trainEditText.setText(train);
@@ -85,6 +87,7 @@ public class UpdateReservation extends AppCompatActivity {
                 String startEdit = startEditText.getText().toString();
                 String destEdit = destEditText.getText().toString();
 
+                //Navigate to reservation summary with edit action
                 Intent intent = new Intent(UpdateReservation.this, ReservationSummary.class);
                 intent.putExtra("id", id);
                 intent.putExtra("userNIC", userNIC);
@@ -112,6 +115,7 @@ public class UpdateReservation extends AppCompatActivity {
         });
     }
 
+    //Method to check whether reservation is valid for update and delete
     private boolean isReservationDateValid(String reservationDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
@@ -128,6 +132,7 @@ public class UpdateReservation extends AppCompatActivity {
         }
     }
 
+    // Method to Disable all editable fields and the update button
     private void disableEditableFields() {
         reserveDateEditText.setEnabled(false);
         noOfTicketsEditText.setEnabled(false);
@@ -138,6 +143,7 @@ public class UpdateReservation extends AppCompatActivity {
         update.setEnabled(false);
     }
 
+    // Method to Calculate the time gap in days
     private long calculateTimeGapInDays(Date currentDate, Date reservationDate) {
         long timeGapInMilliseconds = reservationDate.getTime() - currentDate.getTime();
         return timeGapInMilliseconds / (1000 * 60 * 60 * 24);

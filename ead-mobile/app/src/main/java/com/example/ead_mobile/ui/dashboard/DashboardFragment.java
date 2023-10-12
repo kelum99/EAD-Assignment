@@ -1,15 +1,14 @@
 package com.example.ead_mobile.ui.dashboard;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
 
@@ -19,9 +18,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ead_mobile.R;
 import com.example.ead_mobile.databinding.FragmentDashboardBinding;
+import com.example.ead_mobile.services.AuthService;
 import com.example.ead_mobile.ui.reservation.ReservationSummary;
 import com.example.ead_mobile.ui.reservation.UpdateReservation;
-import com.example.ead_mobile.models.ReservationRequestModel;
 import com.example.ead_mobile.models.ReservationResponseModel;
 import com.example.ead_mobile.services.ReservationService;
 
@@ -42,6 +41,7 @@ public class DashboardFragment extends Fragment {
     private List<Reservation> historyReservations;
     private ReservationAdapter reservationAdapter;
     private ReservationHistoryAdapter reservationHistoryAdapter;
+    AuthService authService;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,18 +51,24 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        reservationsListView = root.findViewById(R.id.reservationListView);
-        reservationHistoryList = root.findViewById(R.id.reservationHistoryList);
-        reservationList = new ArrayList<>();
-        historyReservations = new ArrayList<>();
+        //Get instance of the authService to capture user
+        authService = AuthService.getInstance();
 
+        //list of upcoming reservations
+        reservationsListView = root.findViewById(R.id.reservationListView);
+        reservationList = new ArrayList<>();
         reservationAdapter = new ReservationAdapter();
         reservationsListView.setAdapter(reservationAdapter);
 
+        //list of reservation history
+        reservationHistoryList = root.findViewById(R.id.reservationHistoryList);
+        historyReservations = new ArrayList<>();
         reservationHistoryAdapter = new ReservationHistoryAdapter();
         reservationHistoryList.setAdapter(reservationHistoryAdapter);
 
+        //retrieve reservations
         fetchAndPopulateReservations();
+
         return root;
     }
 
@@ -72,6 +78,7 @@ public class DashboardFragment extends Fragment {
         binding = null;
     }
 
+    //retrieve reservations
     private void fetchAndPopulateReservations() {
         ReservationService.getInstance().viewReservations(
                 new Consumer<List<ReservationResponseModel>>() {
@@ -84,14 +91,15 @@ public class DashboardFragment extends Fragment {
                         // Get the current date
                         Date currentDate = new Date();
 
+                        // Get the logged-in user nic
+                        String loggedUserNIC = authService.getLoggedUserNic();
+
                         // Populate with fetched reservations and categorize them
                         for (ReservationResponseModel reservationResponseModel : reservations) {
-                            // Parse reservation date as a Date object
                             Date reservationDate;
                             try {
                                 reservationDate = new SimpleDateFormat("yyyy-MM-dd").parse(reservationResponseModel.getReservationDate());
                             } catch (ParseException e) {
-                                // Handle parsing error
                                 e.printStackTrace();
                                 continue;
                             }
@@ -112,9 +120,15 @@ public class DashboardFragment extends Fragment {
                                         reservationResponseModel.getAgentID()
                                 );
                                 if (reservationDate.after(currentDate)) {
-                                    reservationList.add(reservation);
+                                    // Check if the reservation's user ID matches the logged-in user NIC
+                                    if (reservation.getUserNIC().equals(loggedUserNIC)) {
+                                        reservationList.add(reservation);
+                                    }
                                 } else {
-                                    historyReservations.add(reservation);
+                                    // Check if the reservation's user ID matches the logged-in user NIC
+                                    if (reservation.getUserNIC().equals(loggedUserNIC)) {
+                                        historyReservations.add(reservation);
+                                    }
                                 }
                             }
                         }
@@ -127,14 +141,14 @@ public class DashboardFragment extends Fragment {
                 new Consumer<String>() {
                     @Override
                     public void accept(String error) {
-                        // Handle the error, e.g., show an error message
-                        // You can display a toast or handle it according to your UI.
                         Toast.makeText(requireContext(), "Error: " + error, Toast.LENGTH_SHORT).show();
                     }
                 }
         );
     }
 
+
+    //Custom adapter for populating upcoming reservation list
     private class ReservationAdapter extends BaseAdapter {
 
         @Override
@@ -168,12 +182,10 @@ public class DashboardFragment extends Fragment {
             RouteTextView.setText(reservation.getRoute());
             trainTextView.setText(reservation.getTrain());
 
-            // Parse reservation date as a Date object
             Date reservationDate;
             try {
                 reservationDate = new SimpleDateFormat("yyyy-MM-dd").parse(reservation.getReservationDate());
             } catch (ParseException e) {
-                // Handle parsing error
                 e.printStackTrace();
                 return convertView;
             }
@@ -202,9 +214,20 @@ public class DashboardFragment extends Fragment {
                 convertView.setOnClickListener(null);
             }
 
+            if (cancelReservationButton.isEnabled()) {
+                // Button is enabled, set the background color to red
+                cancelReservationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.enabledButtonColor)));
+            } else {
+                // Button is disabled, set the background color to grey
+                updateReservationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.disabledButtonColor)));
+                cancelReservationButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.disabledButtonColor)));
+            }
+
+
             updateReservationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //navigate to update page on button click with parameters
                     Intent intent = new Intent(requireContext(), UpdateReservation.class);
                     intent.putExtra("id", reservation.getId());
                     intent.putExtra("userNIC", reservation.getUserNIC());
@@ -223,9 +246,10 @@ public class DashboardFragment extends Fragment {
             });
 
             cancelReservationButton.setOnClickListener(new View.OnClickListener() {
+
+                //navigate to summary page on button click with parameters
                 @Override
                 public void onClick(View v) {
-                    // Create an intent for canceling the reservation
                     Intent intent = new Intent(requireContext(), ReservationSummary.class);
                     intent.putExtra("id", reservation.getId());
                     intent.putExtra("userNIC", reservation.getUserNIC());
@@ -253,7 +277,7 @@ public class DashboardFragment extends Fragment {
             return TimeUnit.MILLISECONDS.toDays(timeGapInMilliseconds);
         }
 
-        // Helper method to redirect to the reservation summary page
+        // Helper method to redirect to the reservation summary page with view action
         private void redirectToReservationSummary(Reservation reservation) {
             Intent intent = new Intent(requireContext(), ReservationSummary.class);
             intent.putExtra("id", reservation.getId());
@@ -273,6 +297,7 @@ public class DashboardFragment extends Fragment {
     }
 
 
+    //Custom adapter for populating reservation history
     private class ReservationHistoryAdapter extends BaseAdapter {
 
         @Override
@@ -302,7 +327,7 @@ public class DashboardFragment extends Fragment {
 
             final Reservation reservation = historyReservations.get(position);
 
-            reservationTextView.setText(reservation.getReservationDate().subSequence(0,10));
+            reservationTextView.setText(reservation.getReservationDate().subSequence(0, 10));
             RouteTextView.setText(reservation.getRoute());
             trainTextView.setText(reservation.getTrain());
 
@@ -336,7 +361,7 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-
+    //Reservation class to represent reservation data
     private class Reservation {
         private String Id;
         private String UserNIC;
@@ -350,7 +375,7 @@ public class DashboardFragment extends Fragment {
         private String Time;
         private String AgentID;
 
-        public Reservation(String id,String userNIC, String bookingDate, String reservationDate, String noOfTickets, String route, String train, String startingPoint, String destination, String time, String agentID) {
+        public Reservation(String id, String userNIC, String bookingDate, String reservationDate, String noOfTickets, String route, String train, String startingPoint, String destination, String time, String agentID) {
             Id = id;
             UserNIC = userNIC;
             BookingDate = bookingDate;

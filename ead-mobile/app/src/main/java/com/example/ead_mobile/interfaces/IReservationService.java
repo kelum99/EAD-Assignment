@@ -12,6 +12,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+
+//Reservation Interface with the APIs for CRUD operations
 public interface IReservationService {
     @POST("reservation/add-reservation")
     Call<ReservationResponseModel> addReservation(@Body ReservationRequestModel request);

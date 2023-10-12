@@ -13,6 +13,7 @@ public class ReservationResponseModel {
     private String time;
     private String agentID;
 
+    //ReservationResponse Constructors
     public ReservationResponseModel() {
     }
 
@@ -30,6 +31,7 @@ public class ReservationResponseModel {
         this.agentID = agentID;
     }
 
+    //ReservationResponse Getters and Setters
     public String getId() {
         return id;
     }

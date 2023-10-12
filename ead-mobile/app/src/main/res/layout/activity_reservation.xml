@@ -40,13 +40,15 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
-        app:icon="@drawable/pencil" />
+        app:icon="@drawable/pencil"
+        app:iconTint="@color/white" />
 
     <Button
         android:id="@+id/cancelReservationButton"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
+        android:backgroundTint="?attr/colorError"
         app:icon="@drawable/delete"
         app:iconTint="@color/white" />
 </LinearLayout>

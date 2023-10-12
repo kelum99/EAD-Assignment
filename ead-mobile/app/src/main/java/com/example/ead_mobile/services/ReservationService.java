@@ -17,6 +17,8 @@ public class ReservationService {
 
     private static ReservationService singleton;
     private IReservationService reservationService;
+
+    //Singleton instance for the ReservationService
     public static ReservationService getInstance() {
         if (singleton == null)
             singleton = new ReservationService();
@@ -28,7 +30,7 @@ public class ReservationService {
         reservationService = NetworkService.getInstance().createService(IReservationService.class);
     }
 
-    //create reservation
+    //create a reservation
     public void addReservation(
             String UserNIC,
             String BookingDate,
@@ -49,7 +51,7 @@ public class ReservationService {
                 return;
             }
 
-            ReservationRequestModel request = new ReservationRequestModel(UserNIC, BookingDate, ReservationDate,noOfTickets, Route,Train,StartingPoint,Destination,Time,AgentID);
+            ReservationRequestModel request = new ReservationRequestModel(UserNIC, BookingDate, ReservationDate, noOfTickets, Route, Train, StartingPoint, Destination, Time, AgentID);
 
 
             reservationService.addReservation(request).enqueue(new Callback<ReservationResponseModel>() {
@@ -72,7 +74,7 @@ public class ReservationService {
         }
     }
 
-    //update reservation
+    //update a reservation
     public void updateReservation(
             String id,
             String UserNIC,
@@ -93,7 +95,7 @@ public class ReservationService {
             return;
         }
 
-        ReservationRequestModel request = new ReservationRequestModel(UserNIC, BookingDate, ReservationDate,noOfTickets, Route,Train,StartingPoint,Destination,Time,AgentID);
+        ReservationRequestModel request = new ReservationRequestModel(UserNIC, BookingDate, ReservationDate, noOfTickets, Route, Train, StartingPoint, Destination, Time, AgentID);
 
         reservationService.updateReservation(id, request).enqueue(new Callback<ReservationResponseModel>() {
             @Override
@@ -114,7 +116,7 @@ public class ReservationService {
     }
 
 
-    //cancel reservation
+    //cancel a reservation
     public void cancelReservation(
             String id,
             Runnable onSuccess,

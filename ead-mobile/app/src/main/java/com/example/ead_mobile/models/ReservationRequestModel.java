@@ -12,6 +12,7 @@ public class ReservationRequestModel {
     private String Time;
     private String AgentID;
 
+    //ReservationRequest Constructors
     public ReservationRequestModel() {
     }
 
@@ -28,6 +29,7 @@ public class ReservationRequestModel {
         AgentID = agentID;
     }
 
+    //ReservationRequest Getters and Setters
     public String getUserNIC() {
         return UserNIC;
     }

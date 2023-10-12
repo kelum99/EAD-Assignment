@@ -1,9 +1,7 @@
 package com.example.ead_mobile.ui.home;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +14,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.ead_mobile.LoginActivity;
-import com.example.ead_mobile.MainActivity2;
 import com.example.ead_mobile.R;
-import com.example.ead_mobile.RegisterActivity;
 import com.example.ead_mobile.databinding.FragmentHomeBinding;
-import com.example.ead_mobile.services.ReservationService;
-import com.example.ead_mobile.ui.dashboard.DashboardFragment;
+import com.example.ead_mobile.services.AuthService;
 import com.example.ead_mobile.ui.reservation.ReservationSummary;
-import com.example.ead_mobile.ui.reservation.UpdateReservation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +27,7 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private EditText nicEditText;
+    private TextView nicEditText;
     private TextView bookingDateEditText;
     private EditText reserveDateEditText;
     private EditText noOfTicketsEditText;
@@ -46,7 +38,7 @@ public class HomeFragment extends Fragment {
     private Spinner timeSpinner;
     private Button submit;
     private Button cancel;
-
+    AuthService authService;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +48,10 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        //Get instance of the authService to capture user
+        authService = AuthService.getInstance();
+
+        //spinners for route, train, time, start and destination
         routeSpinner = binding.etRoute;
         trainSpinner = binding.etTrain;
         startSpinner = binding.etStart;
@@ -68,7 +64,7 @@ public class HomeFragment extends Fragment {
                 android.R.layout.simple_spinner_item
         );
         routeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        routeSpinner.setAdapter(routeAdapter);
+        routeSpinner.setAdapter(routeAdapter);;
 
         ArrayAdapter<CharSequence> trainAdapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -107,13 +103,17 @@ public class HomeFragment extends Fragment {
         reserveDateEditText = root.findViewById(R.id.et_reserveDate);
         noOfTicketsEditText = root.findViewById(R.id.et_tickets);
 
+        //Get the current date and format for booking date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String currentDate = dateFormat.format(new Date());
 
         bookingDateEditText.setText(currentDate);
+        nicEditText.setText(authService.getLoggedUserNic());
 
         submit = root.findViewById(R.id.btn_submit);
         submit.setOnClickListener(new View.OnClickListener() {
+
+            //Navigating to summary page with parameters for adding confirmation
             @Override
             public void onClick(View view) {
 
@@ -127,28 +127,43 @@ public class HomeFragment extends Fragment {
                 String dest = destinationSpinner.getSelectedItem().toString();
                 String time = timeSpinner.getSelectedItem().toString();
 
-                Intent intent = new Intent(requireContext(), ReservationSummary.class);
-                intent.putExtra("id", "");
-                intent.putExtra("userNIC", nic);
-                intent.putExtra("bookingDate", bookingDate);
-                intent.putExtra("reservationDate", reservationDate);
-                intent.putExtra("noOfTickets", noOfTickets);
-                intent.putExtra("route", route);
-                intent.putExtra("train", train);
-                intent.putExtra("startingPoint", start);
-                intent.putExtra("destination", dest);
-                intent.putExtra("time", time);
-                intent.putExtra("agentID", nic);
-                intent.putExtra("action", "Add");
-                startActivityForResult(intent, 201);
+                if (nic.isEmpty() || bookingDate.isEmpty() || reservationDate.isEmpty() || noOfTickets.isEmpty()
+                        || routeSpinner.getSelectedItem().equals("Select Route") || trainSpinner.getSelectedItem().equals("Select Train") || startSpinner.getSelectedItem().equals("Select Start") || destinationSpinner.getSelectedItem().equals("Select Destination") || timeSpinner.getSelectedItem().equals("Select Time")) {
+                    // Display an error message because some fields are empty
+                    Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else {
 
+                    Intent intent = new Intent(requireContext(), ReservationSummary.class);
+                    intent.putExtra("id", "");
+                    intent.putExtra("userNIC", authService.getLoggedUserNic());
+                    intent.putExtra("bookingDate", bookingDate);
+                    intent.putExtra("reservationDate", reservationDate);
+                    intent.putExtra("noOfTickets", noOfTickets);
+                    intent.putExtra("route", route);
+                    intent.putExtra("train", train);
+                    intent.putExtra("startingPoint", start);
+                    intent.putExtra("destination", dest);
+                    intent.putExtra("time", time);
+                    intent.putExtra("agentID", authService.getLoggedUserNic());
+                    intent.putExtra("action", "Add");
+                    startActivityForResult(intent, 201);
+                }
             }
         });
 
         cancel = root.findViewById(R.id.btn_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
+
+            //Reset Fields
             @Override
             public void onClick(View view) {
+                reserveDateEditText.setText("");
+                noOfTicketsEditText.setText("");
+                routeSpinner.setSelection(0);
+                trainSpinner.setSelection(0);
+                startSpinner.setSelection(0);
+                destinationSpinner.setSelection(0);
+                timeSpinner.setSelection(0);
             }
         });
 
