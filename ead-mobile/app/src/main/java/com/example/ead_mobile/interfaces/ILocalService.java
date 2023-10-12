@@ -9,6 +9,7 @@ import com.example.ead_mobile.models.UserEntity;
 
 import java.util.List;
 
+//Local database crud interface methods
 @Dao
 public interface ILocalService {
     @Query("SELECT * FROM Users")

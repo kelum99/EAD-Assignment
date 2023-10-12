@@ -34,6 +34,11 @@
     <string name="btn_confirm">Confirm</string>
     <string name="txt_update_booking">Update Booking</string>
     <string name="btn_update">Update</string>
+    <string name="NIC">NIC</string>
+    <string name="traveler_profile">Traveler Profile</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="deactivate_profile">Deactivate Profile</string>
+    <string name="update">Update</string>
     <string name="summary">Summary</string>
     <array name="train_array">
         <item>Select Train</item>

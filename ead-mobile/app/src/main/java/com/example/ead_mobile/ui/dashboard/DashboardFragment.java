@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -50,6 +51,7 @@ public class DashboardFragment extends Fragment {
 
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         //Get instance of the authService to capture user
         authService = AuthService.getInstance();
