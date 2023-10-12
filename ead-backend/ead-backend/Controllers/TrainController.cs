@@ -1,4 +1,16 @@
-﻿using ead_backend.Models;
+﻿/********************************************************************************
+ * Filename: TrainController.cs
+ * Type: C# Source Code
+ * Size: 3005 bytes
+ * Author: Weerasekara B.J.D.A
+ * Created: 2023-10-09
+ * Last Modified: 2023-10-12
+ * Description: This C# file contains the TrainController class, which provides
+ *              the methods for the crud operation of train schedule 
+ * Institue: Sri Lanka Institute of Information Technology,Malabe.
+ ********************************************************************************/
+
+using ead_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -30,15 +42,7 @@ namespace ead_backend.Controllers
             return CreatedAtAction(nameof(CreateTrain), new { id = train.Id }, train);
         }
 
-        //[Route("get-all-trains")]
-        //[HttpGet]
-
-        //public async Task<List<Train>> GetAllTrains(Enum status = true, string route = "Colombo")
-        //{
-        //  var filterBuilder = Builders<Train>.Filters;
-        //var filter = filterBuilder.Eq("Status", status) & filterBuilder.Eq("Route", route);
-        //return await _trainCollection.Find(_ => true).ToListAsync();
-        //}
+        
 
         [Route("get-all-trains")]
         [HttpGet]
