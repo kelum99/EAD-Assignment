@@ -12,7 +12,7 @@ import com.example.ead_mobile.models.UserEntity;
 import com.example.ead_mobile.services.DatabaseService;
 import com.example.ead_mobile.services.UserService;
 
-public class updateProfile extends AppCompatActivity {
+public class UpdateProfile extends AppCompatActivity {
     Button cancel_btn;
     Button update_btn;
     String userId;

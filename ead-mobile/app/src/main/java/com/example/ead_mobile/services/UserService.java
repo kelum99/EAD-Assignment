@@ -30,7 +30,7 @@ public class UserService {
         iUserService = NetworkService.getInstance().createService(IUserService.class);
     }
 
-    //updateProfile method implementation
+    //UpdateProfile method implementation
     public void updateProfile(
             String id,
             String nic,

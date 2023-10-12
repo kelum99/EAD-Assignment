@@ -22,7 +22,7 @@ import com.example.ead_mobile.models.UserEntity;
 import com.example.ead_mobile.services.AuthService;
 import com.example.ead_mobile.services.DatabaseService;
 import com.example.ead_mobile.services.UserService;
-import com.example.ead_mobile.ui.updateProfile;
+import com.example.ead_mobile.ui.UpdateProfile;
 
 public class ProfileFragment extends Fragment {
 
@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
 
     // Navigation to update screen
     public void navigateUpdate() {
-        Intent i = new Intent(getActivity(), updateProfile.class);
+        Intent i = new Intent(getActivity(), UpdateProfile.class);
         startActivity(i);
         (getActivity()).overridePendingTransition(0, 0);
     }
