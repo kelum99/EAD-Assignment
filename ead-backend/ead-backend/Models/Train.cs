@@ -1,4 +1,16 @@
-﻿using MongoDB.Bson;
+﻿/********************************************************************************
+ * Filename: Train.cs
+ * Type: C# Source Code
+ * Size: 1456 bytes
+ * Author: Weerasekara B.J.D.A.
+ * Created: 2023-10-09
+ * Last Modified: 2023-10-12
+ * Description: This C# file contains the Train class, which provides
+ *              the model for a train shedule with all the attributes
+ * Institue: Sri Lanka Institute of Information Technology,Malabe.
+ ********************************************************************************/
+
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 

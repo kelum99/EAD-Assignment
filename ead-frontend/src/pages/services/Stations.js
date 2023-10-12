@@ -24,6 +24,28 @@ export const Stations = [
     },
 ];
 
+export const Schedule = [
+    {
+    label:"Weekday",
+    value:"Weekday"
+    },
+    {
+        label:"Weekend",
+        value:"Weekend"
+    },
+    {
+        label:"PoyaDay",
+        value:"PoyaDay"
+    },
+    {
+        label:"PoyaDay",
+        value:"PoyaDay"
+    },
+    {
+        label:"Holiday",
+        value:"Holiday"
+    },
+]
 export const Routes = [
     {
         label:"Colombo to Galle",
