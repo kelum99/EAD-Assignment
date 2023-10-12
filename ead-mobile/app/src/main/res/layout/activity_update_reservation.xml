@@ -7,14 +7,15 @@
     android:background="@color/white"
     tools:context=".ui.home.HomeFragment">
 
-    <EditText
+    <TextView
         android:id="@+id/et_nic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/et_nic"
         android:inputType="text"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/et_bookingDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -36,14 +37,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_bookingDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/et_bookingDate"
         android:inputType="text"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/et_reserveDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -52,7 +54,7 @@
 
     <EditText
         android:id="@+id/et_reserveDate"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:ems="10"
@@ -66,8 +68,8 @@
 
     <EditText
         android:id="@+id/et_tickets"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/et_tickets"
@@ -78,30 +80,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_reserveDate" />
 
-    <Spinner
+    <EditText
         android:id="@+id/et_route"
-        android:layout_width="211dp"
-        android:layout_height="36dp"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_tickets" />
 
-    <Spinner
+    <EditText
         android:id="@+id/et_train"
-        android:layout_width="211dp"
-        android:layout_height="36dp"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_route" />
 
-    <Spinner
+    <EditText
         android:id="@+id/et_start"
-        android:layout_width="211dp"
-        android:layout_height="36dp"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -134,24 +136,25 @@
         app:strokeColor="@color/purple_500"
         app:strokeWidth="1dp" />
 
-    <Spinner
+    <EditText
         android:id="@+id/et_destination"
-        android:layout_width="211dp"
-        android:layout_height="36dp"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_start" />
 
-    <EditText
+    <TextView
         android:id="@+id/et_time"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="@string/et_time"
         android:inputType="text"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

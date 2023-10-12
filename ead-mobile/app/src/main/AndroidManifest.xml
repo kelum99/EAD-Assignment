@@ -20,6 +20,12 @@
             android:name=".ui.updateProfile"
             android:exported="false" />
         <activity
+            android:name=".ui.reservation.ReservationHistoryItem"
+            android:exported="false" />
+        <activity
+            android:name=".ui.reservation.Reservation"
+            android:exported="false" />
+        <activity
             android:name=".ui.reservation.ReservationSummary"
             android:exported="false" />
         <activity

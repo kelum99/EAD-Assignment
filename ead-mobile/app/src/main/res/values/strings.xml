@@ -39,19 +39,50 @@
     <string name="update_profile">Update Profile</string>
     <string name="deactivate_profile">Deactivate Profile</string>
     <string name="update">Update</string>
+    <string name="summary">Summary</string>
     <array name="train_array">
-        <item>Train 1</item>
-        <item>Train 2</item>
-        <item>Train 3</item>
+        <item>Select Train</item>
+        <item>Express Train</item>
+        <item>Udarata Manike</item>
+        <item>Yal Devi</item>
+        <item>Intercity Express</item>
+        <item>Podi Manike</item>
+        <item>Express (A)</item>
+        <item>Express (B)</item>
+        <item>Galu Kumari</item>
     </array>
     <array name="route_array">
-        <item>Route 1</item>
-        <item>Route 2</item>
-        <item>Route 3</item>
+        <item>Select Route</item>
+        <item>Colombo to Galle</item>
+        <item>Colombo to Mathara</item>
+        <item>Colombo to Badulla</item>
     </array>
-    <array name="station_array">
-        <item>Station 1</item>
-        <item>Station 2</item>
-        <item>Station 3</item>
+    <array name="start_station_array">
+        <item>Select Start</item>
+        <item>Colombo</item>
+        <item>Galle</item>
+        <item>Bentota</item>
+        <item>Aluthgama</item>
+        <item>Mathara</item>
+        <item>Beliathtta</item>
+    </array>
+    <array name="end_station_array">
+        <item>Select Destination</item>
+        <item>Colombo</item>
+        <item>Galle</item>
+        <item>Bentota</item>
+        <item>Aluthgama</item>
+        <item>Mathara</item>
+        <item>Beliathtta</item>
+    </array>
+    <array name="time_array">
+        <item>Select Time</item>
+        <item>9.30 AM</item>
+        <item>10.30 AM</item>
+        <item>1.00 PM</item>
+        <item>2.00 PM</item>
+        <item>2.30 PM</item>
+        <item>4.30 PM</item>
+        <item>6.00 PM</item>
     </array>
 </resources>
