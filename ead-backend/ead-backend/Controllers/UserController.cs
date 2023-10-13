@@ -1,4 +1,16 @@
-﻿using ead_backend.Models;
+﻿/********************************************************************************
+ * Filename: UserController.cs
+ * Type: C# Source Code
+ * Size: 5319 bytes
+ * Author: Rodrigo P.H.M.S
+ * Created: 2023-10-09
+ * Last Modified: 2023-10-12
+ * Description: This C# file contains the UserController class, which provides
+ *              the methods for the crud operation of User Management 
+ * Institue: Sri Lanka Institute of Information Technology,Malabe.
+ ********************************************************************************/
+
+using ead_backend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -14,19 +26,23 @@ namespace ead_backend.Controllers
         private readonly IMongoCollection<User> _userCollection;
         private readonly ILogger<UserController> _logger;
 
+        //UpdateStatus public class
         public class UpdatedStatus
         {
             public string? Status { get; set; }
         }
 
+        //UserController constructor
         public UserController(ILogger<UserController> logger, IOptions<Database> database)
         {
+            //Initialize the MongoDB collection and logger 
             _logger = logger;
             var mongoClient = new MongoClient(database.Value.ConnectionString);
             var mongoDatabase = mongoClient.GetDatabase(database.Value.DatabaseName);
             _userCollection = mongoDatabase.GetCollection<User>("User");
         }
 
+        //Create User function
         [Route("create-user")]
         [HttpPost]
         public async Task<IActionResult> CreateUser(User user)
@@ -39,6 +55,7 @@ namespace ead_backend.Controllers
 
         }
 
+        //Get all user function
         [Route("get-all-users")]
         [HttpGet]
         public async Task<List<User>> GetAllUsers()
@@ -47,6 +64,7 @@ namespace ead_backend.Controllers
 
         }
 
+        //Fuction to get a user by user id
         [Route("get-user/{id?}")]
         [HttpGet]
         public async Task<User?> GetUserById(string id)
@@ -55,6 +73,7 @@ namespace ead_backend.Controllers
 
         }
 
+        //Fuction to update a user by user id
         [Route("update-user/{id?}")]
         [HttpPut]
         public async Task<IActionResult> UpdateUser(string id, User updatedUser)
@@ -65,13 +84,16 @@ namespace ead_backend.Controllers
             }
 
             updatedUser.Id = user.Id;
+            updatedUser.Status = user.Status;
+            updatedUser.Password = user.Password;
             await _userCollection.ReplaceOneAsync(x => x.Id == id, updatedUser);
 
             return Ok();
 
         }
 
-        [Route("update-user-status/{id?}")]
+        //Fuction to update a user status by user id (Activation and Deactivation)
+        [Route("update-user-status/{id}")]
         [HttpPut]
         public async Task<IActionResult> UpdateUserStatus(string id, UpdatedStatus updatedStatus)
         {
@@ -88,6 +110,7 @@ namespace ead_backend.Controllers
 
         }
 
+        //Fuction to delete a user by user id
         [Route("delete-user/{id?}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteUser(string id)

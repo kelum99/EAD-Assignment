@@ -29,6 +29,7 @@ public class AuthService {
     private final String user_nic = "user_nic";
     private final String user_id = "user_id";
 
+    //Return AuthService singleton object
     public static AuthService getInstance() {
         if (singleton == null)
             singleton = new AuthService();
@@ -41,6 +42,7 @@ public class AuthService {
         databaseService = DatabaseService.getInstance();
     }
 
+    //login method implementation
     public void login(
             String nic,
             String password,
@@ -88,50 +90,7 @@ public class AuthService {
 
     }
 
-    public void saveUserDetails(User user) {
-        new Thread(() -> {
-            databaseService.db().iLocalService().removeAll();
-            databaseService.db().iLocalService().insert(UserEntity.fromDto(user));
-        }).start();
-    }
-
-    public void setLoggingStatus(boolean isLoggedIn, String nic,String id){
-        Context context = ContextService.getInstance().getApplicationContext();
-        SharedPreferences.Editor editor = context.getSharedPreferences(login_status, Context.MODE_PRIVATE).edit();
-        editor.putBoolean(is_logged, isLoggedIn);
-        editor.putString(user_nic, nic);
-        editor.putString(user_id, id);
-        editor.apply();
-    }
-
-    public boolean getLoggingStatus(){
-        Context context = ContextService.getInstance().getApplicationContext();
-        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
-        return preference.getBoolean(is_logged, false);
-    }
-
-    public String getLoggedUserNic(){
-        Context context = ContextService.getInstance().getApplicationContext();
-        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
-        return preference.getString(user_nic,"DEFAULT");
-    }
-
-    public String getLoggedUserId(){
-        Context context = ContextService.getInstance().getApplicationContext();
-        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
-        return preference.getString(user_id,"DEFAULT_ID");
-    }
-
-    public void logout() {
-        new Thread(() -> {
-            Context context = ContextService.getInstance().getApplicationContext();
-            SharedPreferences.Editor editor = context.getSharedPreferences(login_status, Context.MODE_PRIVATE).edit();
-            editor.clear();
-            editor.apply();
-            databaseService.db().iLocalService().removeAll();
-        }).start();
-    }
-
+    //register method implementation
     public void register(
             String nic,
             String password,
@@ -152,6 +111,15 @@ public class AuthService {
                     public void onResponse(@NonNull Call<LoginResponseModel> call, @NonNull Response<LoginResponseModel> response) {
                         if (response.code() == 201) {
                             assert response.body() != null;
+                            User user = new User();
+                            user.id = response.body().id;
+                            user.nic = response.body().nic;
+                            user.name = response.body().name;
+                            user.email = response.body().email;
+                            user.mobile = response.body().mobile;
+                            user.status = response.body().status;
+                            saveUserDetails(user);
+                            setLoggingStatus(true,user.nic,user.id);
                             onSuccess.run();
 
                         } else {
@@ -166,5 +134,55 @@ public class AuthService {
                     }
                 });
 
+    }
+
+    //save user details to local database
+    public void saveUserDetails(User user) {
+        new Thread(() -> {
+            databaseService.db().iLocalService().removeAll();
+            databaseService.db().iLocalService().insert(UserEntity.fromDto(user));
+        }).start();
+    }
+
+    //set login status and save user id and nic of user in shared preferences
+    public void setLoggingStatus(boolean isLoggedIn, String nic,String id){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences.Editor editor = context.getSharedPreferences(login_status, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(is_logged, isLoggedIn);
+        editor.putString(user_nic, nic);
+        editor.putString(user_id, id);
+        editor.apply();
+    }
+
+    //get login status of user from shared preferences
+    public boolean getLoggingStatus(){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
+        return preference.getBoolean(is_logged, false);
+    }
+
+    //get nic of logged user from shared preferences
+    public String getLoggedUserNic(){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
+        return preference.getString(user_nic,"DEFAULT");
+    }
+
+    //get id of logged user from shared preferences
+    public String getLoggedUserId(){
+        Context context = ContextService.getInstance().getApplicationContext();
+        SharedPreferences preference = context.getSharedPreferences(login_status, Context.MODE_PRIVATE);
+        return preference.getString(user_id,"DEFAULT_ID");
+    }
+
+    //logout method implementation
+    public void logout() {
+        new Thread(() -> {
+            Context context = ContextService.getInstance().getApplicationContext();
+            SharedPreferences.Editor editor = context.getSharedPreferences(login_status, Context.MODE_PRIVATE).edit();
+            editor.clear();
+            editor.apply();
+            databaseService.db().iLocalService().removeAll();
+        }).start();
     }
 }

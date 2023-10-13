@@ -13,9 +13,9 @@ import {
   Popconfirm,
   InputNumber
 } from "antd";
-// const { Column, ColumnGroup } = Table;
+
 import MainLayout from "../components/MainLayout";
-import { Stations, Routes } from "./services/Stations";
+import {Stations, Routes, Schedule} from "./services/Stations";
 import useRequest from "./services/RequestContext";
 import dayjs from "dayjs";
 
@@ -96,10 +96,13 @@ export default function TrainManagement() {
     setSelectedId(data.id);
     setEdit(true);
     showModal();
-  
+
     // Set the time retrieved from the database
     setTime(dayjs(data.time, 'HH:mm').format('h:mm A'));
-  
+
+
+
+    //set values for edit form
     const fieldsData = {
       Name: data.name,
       Schedule: data.schedule,
@@ -109,41 +112,8 @@ export default function TrainManagement() {
     };
     form.setFieldsValue(fieldsData);
   };
-  
 
-  // const [componentSize, setComponentSize] = useState("default");
-  // const onFormLayoutChange = ({size}) => {
-  //   setComponentSize(size);
-  // };
-
-  // const onFinish = async (values) => {
-  //     const train = {
-  //
-  //       Name: values.Name,
-  //       Schedule: values.Schedule,
-  //       Time: values.Time,
-  //       Route: values.Route,
-  //       Date: values.Date,
-  //     };
-  //
-  //     await request.post('train/add-train', train).then((res) =>{
-  //       if(res?.status === 400){
-  //         const error =res.data.errors;
-  //         console.log(error)
-  //         if (errors && errors.length > 0){
-  //           const errorMessage = error[0];
-  //           message.error(errorMessage);
-  //         }
-  //       }else if(res?.status === 201){
-  //         handleCancel();
-  //         getTrainData();
-  //         return message.success('Reservation Success!');
-  //       }else {
-  //         return message.error('Internal server error!');
-  //       }
-  //     })
-  // }
-
+  //Create and update trains
   const onFinish = async (values) => {
     try {
       console.log("eeeeeeeee", values);
@@ -192,23 +162,8 @@ export default function TrainManagement() {
     }
   };
 
-  // //edit form
-  // const showEdit = (data) =>{
-  //   setSelectedId(data.id);
-  //   setEdit(true);
-  //   showModal();
-  //   console.log(data);
-  //   const fieldsData = {
-  //     Name: values.Name,
-  //     Schedule: values.Schedule,
-  //     Time: values.Time,
-  //     Route: values.Route,
-  //     Stations: values.Stations,
-  //     Status: values.Status,
-  //   };
-  //   form.setFieldsValue(fieldsData);
-  // };
 
+//Delete trains
   const deleteTrain = async (id) => {
     try {
       request
@@ -225,6 +180,7 @@ export default function TrainManagement() {
     }
   };
 
+//Retrieve all trains details
   const getTrainData = async () => {
     try {
       console.log("Fetching train data...");
@@ -247,6 +203,7 @@ export default function TrainManagement() {
     getTrainData();
   }, []);
 
+
   return (
     <MainLayout title={"Train Management"}>
       <div>
@@ -263,23 +220,12 @@ export default function TrainManagement() {
           title={edit ? "Update Train" : "Create Train Schedule"}
           okText={edit ? "Update" : "Create"}
           width={800}
-          //okText={edit ? 'Update' : 'Create'}
+
           onOk={handleOk}
           open={isModalOpen}
           maskClosable={false}
           onCancel={handleCancel}
-          //   onOk={() => {
-          //     handleOk();
-          //     onReset();
-          //   }}
-          //   footer={[
-          //     <Button key="submit" type="primary" onClick={handleOk}>
-          //       Submit
-          //     </Button>,
-          //   ]}
-          //   onCancel={() => {
-          //     handleCancel();
-          // }}
+
         >
           <Form
             form={form}
@@ -291,26 +237,40 @@ export default function TrainManagement() {
               span: 14,
             }}
             layout="horizontal"
-            // initialValues={{
-            //   size: componentSize,
-            //   remember: true,
-            // }}
+
           >
-            <Form.Item label="Train Name" name="Name">
+            <Form.Item label="Train Name" name="Name" rules={[
+              {
+                required: true,
+              },
+            ]}>
               <Input />
             </Form.Item>
 
-            <Form.Item label="Schedule" name="Schedule">
-              <Select options={Stations} />
+            <Form.Item label="Schedule" name="Schedule"
+                       rules={[
+              {
+                required: true,
+              },
+            ]}>
+              <Select options={Schedule} />
             </Form.Item>
 
-            <Form.Item label="Route" name="Route">
+            <Form.Item label="Route" name="Route" rules={[
+              {
+                required: true,
+              },
+            ]}>
               <Select options={Routes} />
             </Form.Item>
 
-            <Form.Item label="Time" name="Time">
+            <Form.Item label="Time" name="Time" rules={[
+              {
+                required: true,
+              },
+            ]}>
               <Space wrap>
-                <TimePicker 
+                <TimePicker
                   use12Hours
                   format="h:mm A"
                   value={edit ? dayjs(time, 'h:mm A') : undefined}
@@ -330,7 +290,11 @@ export default function TrainManagement() {
               </Select>
             </Form.Item>
 
-            <Form.Item label="Stations" name="Stations">
+            <Form.Item label="Stations" name="Stations" rules={[
+              {
+                required: true,
+              },
+            ]}>
               <Select
                 mode="multiple"
                 allowClear
@@ -338,8 +302,6 @@ export default function TrainManagement() {
                   width: "100%",
                 }}
                 placeholder="Please select"
-                //defaultValue={['a10', 'c12']}
-                //onChange={handleChange}
                 options={Stations}
               />
             </Form.Item>
