@@ -138,7 +138,7 @@ const UserManagement = () => {
             <Table columns={columns} dataSource={data} rowKey={(record) => record.id}/>
             <Button type={"primary"} onClick={showModal}>Create User</Button>
             <Modal
-                title={'Update User Details'}
+                title={edit ? 'Update User Details' : 'Create New User'}
                 okText={edit ? 'Update' : 'Create'}
                 open={isModalOpen} onOk={handleOk}
                 maskClosable={false}
