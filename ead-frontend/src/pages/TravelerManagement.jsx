@@ -12,12 +12,16 @@ const TravelerManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selected, setSelected] = useState();
     const {request} = useRequest()
+
+    // Function to open the modal and set the selected traveler.
     const showModal = (record) => {
         setSelected(record);
         setIsModalOpen(true);
     };
+    // Function to handle the confirmation of activating or deactivating a traveler account.
     const handleOk = () => {
         try {
+            // Send a PUT request to update the traveler's status.
             request.put(`user/update-user-status/${selected?.id}`, {status: selected?.status === 'Active' ? 'Deactivated' : 'Active'}).then((res) => {
                 if (res.status === 200) {
                     message.success(`Account ${selected?.status === 'Active' ? 'Deactivated' : 'Activated'} Successfully!`)
@@ -32,13 +36,15 @@ const TravelerManagement = () => {
             handleCancel();
         }
     };
+    // Function to close the modal and reset the selected traveler.
     const handleCancel = () => {
         setSelected(undefined);
         setIsModalOpen(false);
     };
-
+    // State to store the list of travelers.
     const [travelers, setTravelers] = useState([]);
 
+    // Function to fetch the list of travelers from the server.
     const getUsers = async () => {
         await request.get('user/get-all-users')
             .then((response) => {
@@ -48,12 +54,12 @@ const TravelerManagement = () => {
             })
             .catch((error) => console.error('Error getting traveler', error));
     };
-
+    // Use the useEffect hook to fetch travelers when the component mounts.
     useEffect(() => {
         getUsers();
     }, [])
 
-    // Implement similar functions for updating, deleting, and activating/deactivating travelers.
+    // Define the columns for the table displaying traveler information.
     const columns = [
         {
             title: "NIC",

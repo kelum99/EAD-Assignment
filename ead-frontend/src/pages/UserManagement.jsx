@@ -4,13 +4,20 @@ import {Button, Form, Input, message, Modal, Popconfirm, Select, Space, Table} f
 import useRequest from "./services/RequestContext";
 
 const UserManagement = () => {
+    // State to store user data.
     const [data, setData] = useState([]);
+    // State to control user edit mode.
     const [edit, setEdit] = useState(false);
+    // State to store the selected user's ID.
     const [selectedId, setSelectedId] = useState();
+    // State to control the user management modal.
     const [isModalOpen, setIsModalOpen] = useState(false);
+    // Access the request function from the RequestContext.
     const {request} = useRequest();
+    // Create a form instance to handle user input.
     const [form] = Form.useForm();
 
+    // Define the columns for the user data table.
     const columns = [
         {
             title: 'Name',
@@ -47,16 +54,19 @@ const UserManagement = () => {
         },
     ];
 
+    // Function to open the user management modal.
     const showModal = () => {
         setIsModalOpen(true);
     };
+    // Function to reset the form fields.
     const onReset = () => {
         form.resetFields();
     };
-
+    // Function to handle the OK action in the modal.
     const handleOk = () => {
         form.submit();
     };
+    // Function to close the modal and reset the selected user data.
     const handleCancel = () => {
         setIsModalOpen(false);
         setSelectedId(undefined);
@@ -64,13 +74,14 @@ const UserManagement = () => {
         onReset()
     };
 
+    // Function to show the edit form with user data.
     const showEdit = (data) => {
         setSelectedId(data.id);
         setEdit(true);
         showModal();
         form.setFieldsValue(data);
     }
-
+    // Function to fetch user data from the server.
     const getAdminData = async () => {
         try {
             await request.get('admin/get-all-admins').then((res) => {
@@ -81,6 +92,7 @@ const UserManagement = () => {
         }
     }
 
+    // Function to handle form submission (user creation or update).
     const onFinish = (values) => {
         try {
             if (edit && selectedId) {
@@ -117,6 +129,7 @@ const UserManagement = () => {
         }
     }
 
+    // Function to delete a user.
     const deleteUser = (id) => {
         try{
             request.delete(`admin/delete-admin/${id}`).then((res) => {
