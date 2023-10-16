@@ -91,5 +91,13 @@ namespace ead_backend.Controllers
             await _trainCollection.DeleteOneAsync(x => x.Id == id);
             return NoContent();
         }
+
+        [Route("get-trains/{route?}")]
+        [HttpGet]
+
+        public async Task<List<Train?>> GetActiveTrainsByRoute(string? route)
+        {
+            return await _trainCollection.Find(x => x.Route == route && x.Status == TrainStatus.Active).ToListAsync();
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace ead_backend.Controllers
             {
                 ModelState.AddModelError("", "ReservationDate must be within 30 days of BookingDate.");
                 var errorMessage = ModelState[""].Errors.FirstOrDefault()?.ErrorMessage;
-                return BadRequest(errorMessage); //
+                return BadRequest(errorMessage); 
             }
         }
 
