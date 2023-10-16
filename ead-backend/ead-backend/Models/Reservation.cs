@@ -23,7 +23,7 @@ namespace ead_backend.Models
         public string? UserNIC { get; set; }
         public DateTime BookingDate { get; set; }
         public DateTime ReservationDate { get; set; }
-        public int NoOfTickets { get; set; }
+        public int? NoOfTickets { get; set; }
         public string? Route { get; set; }
         public string? Train { get; set; }
         public string? StartingPoint { get; set; }
